@@ -125,15 +125,40 @@ function playAd() {
   };
 }
 
-// Share
-document.querySelectorAll('.share-label-pill').forEach(btn => {
+// Share logic
+document.querySelectorAll('.share-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    if(btn.textContent === '分享') return; // pure label fallback or do same
-    const text = `【誰才是真正的主人？】我的測驗結果是「${document.getElementById('result-title').textContent}」！快來測測你的主人翁精神指數！`;
-    if (navigator.share) {
-      navigator.share({ title: '主人翁精神測驗', text, url: window.location.href }).catch(console.error);
-    } else {
-      alert('已複製分享內容！\n\n' + text);
+    const resTitle = document.getElementById('result-title').textContent;
+    const shareText = `【誰才是真正的主人？】我的測驗結果是「${resTitle}」！快來測測你的主人翁精神指數！`;
+    const shareUrl = window.location.href;
+    
+    if (btn.id === 'share-fb') {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
+    } else if (btn.id === 'share-line') {
+      window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+    } else if (btn.id === 'share-threads') {
+      window.open(`https://www.threads.net/intent/post?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`, '_blank');
+    } else if (btn.id === 'share-ig') {
+      // Instagram 不支援 URL 分享，通常採複製文字
+      if (navigator.share) {
+        navigator.share({ title: '主人翁精神測驗', text: shareText, url: shareUrl }).catch(err => {
+          navigator.clipboard.writeText(shareText + ' ' + shareUrl).then(() => alert('IG 分享預備：已複製測驗結果與網址！'));
+        });
+      } else {
+        navigator.clipboard.writeText(shareText + ' ' + shareUrl).then(() => alert('已複製測驗結果與連結，前往 IG 貼上即可分享！'));
+      }
     }
   });
 });
+
+// "分享" label fallback
+document.getElementById('share-label').onclick = () => {
+  if (navigator.share) {
+    const resTitle = document.getElementById('result-title').textContent;
+    navigator.share({
+      title: '主人翁精神測驗',
+      text: `【誰才是真正的主人？】我的測驗結果是「${resTitle}」！`,
+      url: window.location.href
+    }).catch(console.error);
+  }
+};
