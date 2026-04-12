@@ -76,9 +76,13 @@ function finishQuiz() {
     else if(totalScore >= 15) resKey = 'res4';
     
     const res = quizData.results[resKey];
-    document.getElementById('result-title').textContent = res.title;
+    const resTitle = res.title;
+    document.getElementById('result-title').textContent = resTitle;
     document.getElementById('result-desc').innerHTML = res.desc;
     document.getElementById('result-image').src = res.image;
+    
+    // 動態更新標題，利於 FB 抓取
+    document.title = `我是「${resTitle}」！測測你的主人翁精神指數！`;
     
     showPage('result');
   }, 1800);
@@ -131,34 +135,45 @@ document.querySelectorAll('.share-btn').forEach(btn => {
     const resTitle = document.getElementById('result-title').textContent;
     const shareText = `【誰才是真正的主人？】我的測驗結果是「${resTitle}」！快來測測你的主人翁精神指數！`;
     const shareUrl = window.location.href;
-    
-    if (btn.id === 'share-fb') {
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
-    } else if (btn.id === 'share-line') {
-      window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
-    } else if (btn.id === 'share-threads') {
-      window.open(`https://www.threads.net/intent/post?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`, '_blank');
-    } else if (btn.id === 'share-ig') {
-      // Instagram 不支援 URL 分享，通常採複製文字
-      if (navigator.share) {
-        navigator.share({ title: '主人翁精神測驗', text: shareText, url: shareUrl }).catch(err => {
-          navigator.clipboard.writeText(shareText + ' ' + shareUrl).then(() => alert('IG 分享預備：已複製測驗結果與網址！'));
-        });
-      } else {
-        navigator.clipboard.writeText(shareText + ' ' + shareUrl).then(() => alert('已複製測驗結果與連結，前往 IG 貼上即可分享！'));
+    const fullText = `${shareText} ${shareUrl}`;
+
+    // 一律先複製文字到剪貼簿 (最強備援)
+    navigator.clipboard.writeText(fullText).then(() => {
+      let platform = btn.id.replace('share-', '').toUpperCase();
+      if (platform === 'THREADS') platform = 'Threads';
+      
+      // 顯示搞怪風格的提示
+      const alertMsg = platform === 'IG' ? 
+        `已為您複製結果！\n請直接在 IG 限動貼上即可分享！` : 
+        `已為您複製結果！\n若 ${platform} 沒出現文字，直接貼上即可！`;
+      alert(alertMsg);
+
+      // 執行跳轉
+      if (btn.id === 'share-fb') {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+      } else if (btn.id === 'share-line') {
+        window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+      } else if (btn.id === 'share-threads') {
+        window.open(`https://www.threads.net/intent/post?text=${encodeURIComponent(fullText)}`, '_blank');
       }
-    }
+    });
   });
 });
 
 // "分享" label fallback
 document.getElementById('share-label').onclick = () => {
+  const resTitle = document.getElementById('result-title').textContent;
+  const fullText = `【誰才是真正的主人？】我的測驗結果是「${resTitle}」！\n${window.location.href}`;
+  
   if (navigator.share) {
-    const resTitle = document.getElementById('result-title').textContent;
     navigator.share({
       title: '主人翁精神測驗',
-      text: `【誰才是真正的主人？】我的測驗結果是「${resTitle}」！`,
+      text: fullText,
       url: window.location.href
-    }).catch(console.error);
+    }).catch(err => {
+      navigator.clipboard.writeText(fullText).then(() => alert('測驗結果與連結已複製！'));
+    });
+  } else {
+    navigator.clipboard.writeText(fullText).then(() => alert('測驗結果與連結已複製！'));
   }
 };
