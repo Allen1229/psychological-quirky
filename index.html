@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>測測你的「主人翁精神」指數！</title>
+  <meta name="description" content="誰才是真正的主人？測驗看看你的責任感到底突破天際，還是宇宙級破壞王！">
+  <meta property="og:title" content="測測你的「主人翁精神」指數！">
+  <meta property="og:description" content="誰才是真正的主人？測驗看看你的責任感到底突破天際，還是宇宙級破壞王！">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <div id="app" class="app-container">
+
+    <!-- 首頁 -->
+    <div id="home-page" class="page active">
+      <div class="home-box">
+        <div class="tag">💀 職場/人生生存指南</div>
+        <h1 class="main-title">誰才是真正的<br><span class="highlight">主人？！</span></h1>
+        
+        <div class="hero-image-wrapper">
+           <img src="images/hero.png" alt="Quiz Hero" class="hero-image" id="hero-img">
+        </div>
+        
+        <p class="intro-description">測驗看看你的「主人翁精神」到底突破天際，還是看破紅塵的薪水小偷？點擊下方立刻接受殘酷拷問！</p>
+        
+        <div class="home-actions mt-auto">
+          <button id="start-btn" class="action-btn">
+             立刻開始測驗！
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 測驗頁 -->
+    <div id="quiz-page" class="page">
+      <div class="quiz-header">
+        <div class="progress-bar-container">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <div class="question-counter" id="question-counter"></div>
+      </div>
+      
+      <div class="quiz-content">
+        <h2 id="question-title" class="question-title"></h2>
+        <div id="options-container" class="options-wrapper">
+          <!-- JS 動態產生選項 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 分析中狀態 -->
+    <div id="loading-page" class="page">
+      <div class="loading-content">
+        <div class="comic-spinner">!</div>
+        <h2 class="loading-title">正在洞察你的靈魂...</h2>
+        <p class="loading-desc">請稍候，荒謬的結果即將出爐</p>
+      </div>
+    </div>
+
+    <!-- 結果頁 -->
+    <div id="result-page" class="page">
+      <div class="result-header">
+        <div class="tag">你的主人翁指數判定為</div>
+        <h1 id="result-title" class="result-title"></h1>
+      </div>
+
+      <div class="result-image-wrapper">
+        <img id="result-image" src="" alt="Result" class="result-image">
+        <div class="result-desc-card">
+           <p id="result-desc" class="result-desc"></p>
+        </div>
+      </div>
+
+      <div class="result-actions mt-auto">
+        <button id="restart-btn" class="action-btn restart-btn">
+          不服氣！重新測驗
+        </button>
+
+        <!-- 純文字 1 1 0 平等寬度分享列，完美貼齊無間距 -->
+        <div class="share-container">
+          <button class="share-label-pill">分享</button>
+          <button class="share-label-pill">FB</button>
+          <button class="share-label-pill">脆</button>
+          <button class="share-label-pill">LINE</button>
+          <button class="share-label-pill">IG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 公版：廣告蓋台 Modal -->
+    <div id="ad-modal" class="ad-modal hidden">
+      <div class="ad-content">
+        <button id="ad-close-btn" class="ad-close-btn hidden">X</button>
+        <div id="ad-timer" class="ad-timer">5</div>
+        <img id="ad-icon" src="" alt="Game Icon" class="ad-icon" />
+        <h2 id="ad-title" class="ad-title">廣告標題</h2>
+        <p id="ad-desc" class="ad-desc">廣告描述文案</p>
+        <button id="ad-action-btn" class="action-btn ad-action-btn">馬上看看</button>
+      </div>
+    </div>
+
+  </div> <!-- end app-container -->
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

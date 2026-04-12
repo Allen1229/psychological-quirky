@@ -1,0 +1,516 @@
+/* =======================
+   Variables & Reset
+   ======================= */
+:root {
+  --primary-color: #ff3366; /* 強烈桃紅 */
+  --secondary-color: #ffdd00; /* 刺眼黃 */
+  --tertiary-color: #00ccff; /* 霓虹藍 */
+  --text-main: #111111;
+  --bg-color: #e6e6e6; /* 灰白底 */
+  --card-bg: #ffffff;
+  --border-width: 4px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  background-color: #222222; /* 桌機看時外層變黑底 */
+}
+
+body {
+  font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+  color: var(--text-main);
+  background-color: #222222;
+}
+
+/* 核心：跨屏 480px 限定與置中 */
+.app-container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  height: 100vh;
+  height: 100dvh;
+  background-color: var(--bg-color);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  display: none;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--bg-color);
+  /* 搞怪網點背景 */
+  background-image: radial-gradient(#cccccc 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+.page.active {
+  display: flex;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* =======================
+   Typography & Common UI
+   ======================= */
+.tag {
+  display: inline-block;
+  background: var(--secondary-color);
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 900;
+  padding: 6px 14px;
+  border: var(--border-width) solid var(--text-main);
+  box-shadow: 4px 4px 0 var(--text-main);
+  transform: rotate(-2deg);
+  margin-bottom: 16px;
+}
+
+.main-title {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.3;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.highlight {
+  color: var(--card-bg);
+  background-color: var(--primary-color);
+  padding: 0 8px;
+  display: inline-block;
+  transform: rotate(1deg);
+  border: 3px solid var(--text-main);
+}
+
+.action-btn {
+  background: var(--tertiary-color);
+  color: var(--text-main);
+  border: var(--border-width) solid var(--text-main);
+  width: 100%;
+  padding: 18px;
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 6px 6px 0 var(--text-main);
+  transition: all 0.1s;
+  text-transform: uppercase;
+}
+
+.action-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 var(--text-main);
+}
+
+.mt-auto {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* =======================
+   Home Page
+   ======================= */
+.home-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.hero-image-wrapper {
+  flex: 0 1 auto;
+  width: 100%;
+  border: var(--border-width) solid var(--text-main);
+  background: var(--card-bg);
+  padding: 8px;
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+  transform: rotate(1deg);
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border: 2px solid var(--text-main);
+}
+
+.intro-description {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  background: var(--card-bg);
+  padding: 12px;
+  border: 3px solid var(--text-main);
+}
+
+/* =======================
+   Quiz Page
+   ======================= */
+.quiz-header {
+  padding: 24px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 16px;
+  background: var(--card-bg);
+  border: 3px solid var(--text-main);
+  overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: 3px 3px 0 var(--text-main);
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--primary-color);
+  width: 0%;
+  transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.question-counter {
+  font-size: 16px;
+  font-weight: 900;
+  text-align: right;
+}
+
+.quiz-content {
+  flex: 1;
+  padding: 0 24px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.question-title {
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.4;
+  margin-bottom: 24px;
+  background: var(--secondary-color);
+  padding: 16px;
+  border: var(--border-width) solid var(--text-main);
+  box-shadow: 4px 4px 0 var(--text-main);
+  transform: rotate(-1deg);
+}
+
+.options-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.option-btn {
+  background: var(--card-bg);
+  border: var(--border-width) solid var(--text-main);
+  padding: 18px 20px;
+  font-size: 18px;
+  color: var(--text-main);
+  font-weight: 700;
+  text-align: left;
+  line-height: 1.4;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 var(--text-main);
+  transition: all 0.1s;
+}
+
+.option-btn:active, .option-btn.selected {
+  background: var(--secondary-color);
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--text-main);
+}
+
+/* =======================
+   Loading Page
+   ======================= */
+.loading-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.comic-spinner {
+  width: 80px;
+  height: 80px;
+  background: var(--primary-color);
+  border: var(--border-width) solid var(--text-main);
+  color: white;
+  font-size: 50px;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+  animation: wobble 1s infinite alternate ease-in-out;
+}
+
+@keyframes wobble {
+  0% { transform: rotate(-15deg) scale(0.9); }
+  100% { transform: rotate(15deg) scale(1.1); }
+}
+
+.loading-title {
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.loading-desc {
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--card-bg);
+  padding: 8px 16px;
+  border: 3px solid var(--text-main);
+}
+
+/* =======================
+   Result Page 
+   ======================= */
+#result-page {
+  padding: 20px;
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.result-title {
+  font-size: 34px;
+  font-weight: 900;
+  color: var(--card-bg);
+  text-shadow: 
+    3px 3px 0 var(--text-main),
+    -1px -1px 0 var(--text-main),
+    1px -1px 0 var(--text-main),
+    -1px 1px 0 var(--text-main),
+    1px 1px 0 var(--text-main);
+  -webkit-text-stroke: 1px var(--text-main);
+  letter-spacing: 2px;
+  transform: scale(1.05) rotate(-2deg);
+  margin: 10px 0;
+}
+
+.result-image-wrapper {
+  flex: 1 1 0; /* Ensures it takes up remaining vertical space nicely */
+  min-height: 0;
+  overflow: hidden;
+  border: var(--border-width) solid var(--text-main);
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  padding: 10px;
+}
+
+.result-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex: 1 1 0;
+  min-height: 0;
+  border: 2px solid var(--text-main);
+}
+
+.result-desc-card {
+  background: var(--secondary-color);
+  padding: 16px;
+  border: 3px solid var(--text-main);
+  flex: 0 0 auto;
+  margin-top: 10px;
+  position: relative;
+}
+
+/* 搞怪對話框角角 */
+.result-desc-card::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  border-width: 0 15px 15px 0;
+  border-style: solid;
+  border-color: transparent transparent var(--text-main) transparent;
+}
+
+.result-desc {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+.result-actions {
+  flex: 0 0 auto;
+  padding-top: 16px;
+}
+
+.restart-btn {
+  margin-bottom: 12px;
+  background: var(--primary-color);
+  color: white;
+}
+
+/* 純文字，依公版強制等分、間距 0，靠緊 */
+.share-container {
+  display: flex;
+  width: 100%;
+  height: 48px;
+  border: var(--border-width) solid var(--text-main);
+  box-shadow: 4px 4px 0 var(--text-main);
+  background: var(--card-bg);
+}
+
+.share-label-pill {
+  flex: 1 1 0;
+  padding: 0;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 900;
+  border: none;
+  border-right: 3px solid var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.share-label-pill:last-child {
+  border-right: none;
+}
+
+.share-label-pill:hover, .share-label-pill:active {
+  background: var(--secondary-color);
+}
+
+/* =======================
+   Ad Modal
+   ======================= */
+.ad-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  padding: 20px;
+  /* 此 modal 將存在於 .app-container 內，所以定位會相對於 container 若沒有 transform 影響，通常 fixed 是視窗級別。但因我們需要限制在 480px 內，最好讓 modal 變成 absolute 或使用特別處理 */
+  position: absolute; 
+}
+
+.ad-modal.hidden {
+  display: none !important;
+}
+
+.ad-content {
+  background: var(--card-bg);
+  border: var(--border-width) solid var(--text-main);
+  box-shadow: 8px 8px 0 var(--text-main);
+  width: 100%;
+  max-width: 320px;
+  padding: 30px 20px 24px;
+  position: relative;
+  text-align: center;
+  transform: rotate(-1deg);
+}
+
+.ad-timer {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: var(--primary-color);
+  color: white;
+  width: 44px;
+  height: 44px;
+  border: 3px solid var(--text-main);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  font-size: 18px;
+  box-shadow: 3px 3px 0 var(--text-main);
+}
+
+.ad-timer.hidden {
+  display: none !important;
+}
+
+.ad-close-btn {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 44px;
+  height: 44px;
+  background: white;
+  border: 3px solid var(--text-main);
+  border-radius: 50%;
+  color: var(--text-main);
+  font-weight: 900;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 3px 3px 0 var(--text-main);
+}
+
+.ad-close-btn.hidden {
+  display: none !important;
+}
+
+.ad-icon {
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--text-main);
+  object-fit: contain;
+  margin: 0 auto 16px;
+  display: block;
+}
+
+.ad-title {
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.ad-desc {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.ad-action-btn {
+  background: var(--secondary-color);
+  padding: 14px;
+  font-size: 18px;
+}
